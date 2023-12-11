@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import tkinter as tk
 
 
 class Application:
@@ -21,3 +20,7 @@ class Application:
         entry_box = ctk.CTkEntry(self.app, text=text, textvariable=entry_var)
         entry_box.pack(padx=x, pady=y)
         return entry_var
+
+    def add_button(self, name, x, y, callback):
+        main_button = ctk.CTkButton(self.app, text=name, command=callback)
+        main_button.pack(padx=x, pady=y)
