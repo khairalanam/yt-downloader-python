@@ -1,4 +1,6 @@
-class YTDownloader:
-    def __init__(self, app):
-        self.app = app
+from Application import Application
+
+
+class YTDownloader(Application):
+    def __init__(self):
         print("YT Initialised!")
