@@ -12,7 +12,7 @@ playlist_link: StringVar = app.add_entry(400, 40)
 
 # Download button
 app.add_button("Download", 200, 40,
-               YTDownloader.start_download, playlist_link.get())
+               YTDownloader.start_playlist_download, playlist_link)
 
 # Run the app
 app.run_app()
