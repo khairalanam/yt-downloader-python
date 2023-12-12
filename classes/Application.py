@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from types import FunctionType
 from tkinter import messagebox
+from functools import partial
 
 
 class Application:
@@ -27,9 +28,9 @@ class Application:
         entry_box.pack(padx=x, pady=y)
         return entry_var
 
-    def add_button(self, name: str, width: int, height: int, callback: FunctionType, params=None, x: int = 20, y: int = 20):
+    def add_button(self, name: str, width: int, height: int, func: FunctionType, params, x: int = 20, y: int = 20):
         main_button = ctk.CTkButton(
-            self.app, text=name, command=lambda: callback(params), font=("Helvetica", 20, "bold"), width=width, height=height)
+            self.app, text=name, command=partial(func, params), font=("Helvetica", 20, "bold"), width=width, height=height)
         main_button.pack(padx=x, pady=y)
 
     @staticmethod
