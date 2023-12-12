@@ -12,7 +12,10 @@ playlist_link: StringVar = app.add_entry(400, 40)
 
 # Download button
 app.add_button("Download", 200, 40,
-               YTDownloader.start_playlist_download, playlist_link)
+               app.start_playlist_download, playlist_link)
+
+# Percentage label
+app.add_label("0%")
 
 # Run the app
 app.run_app()
