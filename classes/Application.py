@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from types import FunctionType
+from tkinter import messagebox
 
 
 class Application:
@@ -30,3 +31,11 @@ class Application:
         main_button = ctk.CTkButton(
             self.app, text=name, command=lambda: callback(params), font=("Helvetica", 20, "bold"), width=width, height=height)
         main_button.pack(padx=x, pady=y)
+
+    @staticmethod
+    def show_error(title, desc):
+        messagebox.showerror(title, desc)
+
+    @staticmethod
+    def show_info(title, desc):
+        messagebox.showinfo(title, desc)
