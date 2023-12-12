@@ -2,6 +2,7 @@ import customtkinter as ctk
 from types import FunctionType
 from tkinter import messagebox
 from functools import partial
+from PIL import Image
 
 
 class Application:
@@ -40,3 +41,8 @@ class Application:
     @staticmethod
     def show_info(title, desc):
         messagebox.showinfo(title, desc)
+
+    def add_image(self, src, x: int = 10, y: int = 20):
+        main_image = ctk.CTkImage(dark_image=Image.open(src), size=(60, 80))
+        image_label = ctk.CTkLabel(self.app, image=main_image)
+        image_label.pack(padx=x, pady=y)
