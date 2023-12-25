@@ -2,7 +2,7 @@ from classes.YTDownloader import YTDownloader
 from tkinter import StringVar
 
 # App creation
-app: YTDownloader = YTDownloader("YT Downloader", "1024x640")
+app: YTDownloader = YTDownloader("YT Downloader", "1024x640", "./assets/main-logo.ico")
 
 # Title
 playlist_label = app.add_label("Insert the playlist link to download", 20, 30)
