@@ -5,8 +5,6 @@ from functools import partial
 from PIL import Image
 import urllib.request
 from io import BytesIO
-import time
-
 
 class Application:
     def __init__(self, name: str, dimensions: str):
@@ -15,7 +13,6 @@ class Application:
         self.app = ctk.CTk()
         self.app.title(name)
         self.app.geometry(dimensions)
-        print("Initialised!")
 
     def run_app(self):
         self.app.mainloop()
@@ -37,6 +34,7 @@ class Application:
         main_button = ctk.CTkButton(
             self.app, text=name, command=partial(func, params), font=("Helvetica", 15, "bold"), width=width, height=height)
         main_button.pack(padx=x, pady=y)
+        return main_button
 
     @staticmethod
     def show_error(title, desc):
@@ -52,6 +50,7 @@ class Application:
         image_label.pack(padx=x, pady=y)
         return image_label
 
+    # Converts an image URL to readable buffer
     @staticmethod
     def show_image_from_url(image_url: str):
         with urllib.request.urlopen(image_url) as url_response:
