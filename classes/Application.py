@@ -7,10 +7,11 @@ import urllib.request
 from io import BytesIO
 
 class Application:
-    def __init__(self, name: str, dimensions: str):
+    def __init__(self, name: str, dimensions: str, icon: str):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("green")
         self.app = ctk.CTk()
+        self.app.iconbitmap(icon)
         self.app.title(name)
         self.app.geometry(dimensions)
 

@@ -8,8 +8,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 class YTDownloader(Application):
-    def __init__(self, name, dimensions):
-        super().__init__(name, dimensions)
+    def __init__(self, name, dimensions, icon):
+        super().__init__(name, dimensions, icon)
 
         # Number of videos downloaded
         self.video_count = 0
