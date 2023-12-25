@@ -1,4 +1,3 @@
-from multiprocessing import Pool
 from time import time
 from pytube import Playlist, YouTube, Stream
 from pytube.exceptions import VideoUnavailable
@@ -12,17 +11,24 @@ from concurrent.futures import ThreadPoolExecutor
 class YTDownloader(Application):
     def __init__(self, name, dimensions):
         super().__init__(name, dimensions)
+
+        # Number of videos downloaded
         self.video_count = 0
+
+        # Name of the current video being downloaded
         self.curr_label = self.add_label("", 20, 0)
         self.curr_label.pack_forget()
         self.curr_label.place(relx=0.5, rely=0.45)
-        # self.video_title = self.add_label("", 20, 0)
+
+        # Progress bar
         self.progress_bar = self.add_progress_bar()
         self.progress_bar.pack_forget()
+
+        # Percentage of the progress bar
         self.progress_bar_percentage = self.add_label("", 20, 0)
         self.progress_bar_percentage.pack_forget()
-        print("YT Initialised!")
 
+    # To check the progress of the video being downloaded
     def on_progress(self, stream: Stream, chunk, bytes_remaining):
         total_size = stream.filesize
         bytes_downloaded = total_size - bytes_remaining
@@ -36,32 +42,30 @@ class YTDownloader(Application):
 
     def download_video(self, video_obj: (YouTube, int)):
         try:
-            video_object: YouTube = video_obj[0]
-            video_url = video_object.watch_url
-            video_yt_obj: YouTube = YouTube(
-                video_url, on_progress_callback=self.on_progress)
+            # Destructuring the Youtube object and the video count
+            video_object: YouTube = YouTube(
+                video_obj[0].watch_url, on_progress_callback=self.on_progress)
             size: int = video_obj[1]
 
-            # self.video_title.pack(padx=20, pady=30)
-            self.progress_bar.place(relx=0.5, rely=0.6)
+            # Place the progress bar component
             self.progress_bar_percentage.place(relx=0.5, rely=0.55)
-            start = time()
-            video = video_yt_obj.streams.get_highest_resolution()
-            # self.curr_label.configure(text=f"Downloading: {video.title}", font=("Helvetica", 14, "bold"))
+            self.progress_bar.place(relx=0.5, rely=0.6)
+
+            # Get the highest resolution and download it to the Downloads folder
+            video = video_object.streams.get_highest_resolution()
             video.download(output_path=os.path.join(
                 os.path.expanduser("~"), "Downloads"))
-            self.curr_label.configure(text=f"({self.video_count + 1}/{size}) Downloaded {
-                                      video.title}: {time() - start}s", font=("Helvetica", 14, "bold"))
 
-            print(
-                f"({self.video_count + 1}/{size}) Downloaded {video.title}: {time() - start}s")
+            self.curr_label.configure(text=f"({self.video_count + 1}/{size}) Downloaded {
+                                      video.title}", font=("Helvetica", 14, "bold"))
             self.video_count += 1
-            # self.video_title.forget()
+
         except Exception as e:
-            print(f"Error downloading {video.title}: {e}")
+            self.show_error("Error", f"Error downloading {video.title}: {e}")
 
     async def download_playlist(self, playlist_link):
         try:
+            # Resets
             self.curr_label.configure(text="")
             self.curr_label.place(relx=0.5, rely=0.45)
             self.progress_bar_percentage.configure(text="0%")
@@ -71,9 +75,7 @@ class YTDownloader(Application):
             playlist_object = Playlist(playlist_link.get())
             list_of_videos = [*playlist_object.videos]
 
-            # Set timer
-            start = time()
-
+            # Fetch the playlist name and thumbnail
             playlist_name = self.add_label(f"Playlist name: {playlist_object.title}", 10, 10)
             playlist_name.forget()
             playlist_name.place(relx=0.1, rely=0.45)
@@ -83,16 +85,19 @@ class YTDownloader(Application):
             playlist_image.forget()
             playlist_image.place(relx=0.1, rely=0.55)
 
-            # Download process using multiprocessing
+            # Playlist download
             loop = asyncio.get_event_loop()
             with ThreadPoolExecutor(max_workers=os.cpu_count()) as pool:
+                # Create threads for each video being downloaded with a set maximum number of threads
                 await asyncio.gather(*[loop.run_in_executor(pool, self.download_video, (video, playlist_object.length)) for video in list_of_videos])
 
-                print(f"Time taken: {time() - start} s")
+                # Set the label to completion
                 self.curr_label.place_forget()
                 self.curr_label.configure(
                     text="Finished Downloading!!! Check Your Downloads Folder", font=("Helvetica", 20, "bold"))
                 self.curr_label.pack(padx=20, pady=20)
+
+                # Resets
                 self.video_count = 0
                 self.progress_bar_percentage.place_forget()
                 self.progress_bar.place_forget()
@@ -102,6 +107,7 @@ class YTDownloader(Application):
         except VideoUnavailable:
             self.add_label("Invalid Link!", 40, 40)
 
+    # Create the thread for the playlist downloading
     def start_playlist_download_thread(self, playlist_link):
         loop = asyncio.get_event_loop()
         download_thread = Thread(target=loop.run_until_complete, args=(
