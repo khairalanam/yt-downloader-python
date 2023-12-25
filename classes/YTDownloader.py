@@ -1,4 +1,3 @@
-from time import time
 from pytube import Playlist, YouTube, Stream
 from pytube.exceptions import VideoUnavailable
 from .Application import Application
