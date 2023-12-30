@@ -13,6 +13,7 @@ Welcome to the YouTube Playlist Downloader project! This application allows user
 - [Benchmark Observations](#benchmark-observations)
 - [Architecture](#architecture)
 - [Usage](#usage)
+- [Live Demo](#live-demo)
 - [Contributions](#contributions)
 - [License](#license)
 - [Conclusion](#conclusion)
@@ -126,6 +127,10 @@ The architecture involves a graphical user interface created with customtkinter.
 3. Click the "Download" button to initiate the parallel video download process.
 4. Monitor the progress in the application.
 5. Check the `Downloads` folder for the downloaded videos.
+
+## Live Demo
+
+https://github.com/khairalanam/yt-downloader-python/assets/84736189/bbbf9dd2-29fa-4b86-8626-eefbb30558e6
 
 ## Contributions
 
